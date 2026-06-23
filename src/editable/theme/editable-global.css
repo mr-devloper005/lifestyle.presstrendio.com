@@ -1,8 +1,10 @@
-/* Fully editable publication theme. Keep data and route logic outside this file. */
+/* Editable premium media-distribution theme */
 :root {
   --editorial-red: var(--slot4-accent-fill);
   --editorial-ink: var(--slot4-page-text);
   --editorial-paper: var(--slot4-surface-bg);
+  --hero-gradient: linear-gradient(135deg, #186f65 0%, #2f7f66 30%, #b2533e 100%);
+  --footer-gradient: linear-gradient(120deg, #186f65 0%, #3c8c68 38%, #8ea961 68%, #b2533e 100%);
 }
 
 html { scroll-behavior: smooth; }
@@ -10,7 +12,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--slot4-page-bg) !important;
   color: var(--slot4-page-text) !important;
-  background-image: none !important;
+  background-image: var(--slot4-body-gradient) !important;
   font-feature-settings: "kern", "liga", "clig", "calt";
 }
 
@@ -26,9 +28,9 @@ body {
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #ebe7e1; }
-::-webkit-scrollbar-thumb { background: #171717; border: 2px solid #ebe7e1; }
-::-webkit-scrollbar-thumb:hover { background: var(--editorial-red); }
+::-webkit-scrollbar-track { background: #eaf0d9; }
+::-webkit-scrollbar-thumb { background: #186f65; border: 2px solid #eaf0d9; }
+::-webkit-scrollbar-thumb:hover { background: #b2533e; }
 
 .editorial-brand,
 .editorial-serif {
@@ -36,17 +38,36 @@ body {
 }
 
 .editorial-brand {
-  font-style: italic;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.055em;
 }
 
-.editorial-rule { border-color: color-mix(in srgb, var(--editorial-ink) 22%, transparent); }
+.editorial-rule { border-color: color-mix(in srgb, var(--editorial-ink) 16%, transparent); }
+
+.premium-hero-curve {
+  position: relative;
+  overflow: hidden;
+  border-bottom-left-radius: 42% 14%;
+}
+
+.premium-hero-curve::after {
+  content: "";
+  position: absolute;
+  inset: auto -12% -48% 36%;
+  height: 72%;
+  border-radius: 50%;
+  background: rgba(255, 253, 244, 0.96);
+}
+
+.glass-card {
+  background: rgba(255, 253, 244, 0.75);
+  backdrop-filter: blur(14px);
+}
 
 .article-content {
-  color: #24211e;
+  color: #204944;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.05rem, 1vw + .75rem, 1.25rem);
-  line-height: 1.82;
+  font-size: clamp(1.03rem, 1vw + .72rem, 1.22rem);
+  line-height: 1.88;
 }
 
 .article-content > :first-child { margin-top: 0; }
@@ -54,9 +75,9 @@ body {
 .article-content p:first-of-type::first-letter {
   float: left;
   margin: .08em .12em 0 0;
-  color: var(--editorial-red);
+  color: var(--slot4-accent-fill);
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 4.7em;
+  font-size: 4.5em;
   font-weight: 900;
   line-height: .72;
 }
@@ -65,23 +86,38 @@ body {
 .article-content h3,
 .article-content h4 {
   margin: 1.8em 0 .65em;
-  color: #111;
+  color: #143c39;
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-weight: 900;
   letter-spacing: -.045em;
-  line-height: 1.05;
+  line-height: 1.08;
 }
+
 .article-content h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
 .article-content h3 { font-size: clamp(1.45rem, 3vw, 2.15rem); }
-.article-content a { color: var(--editorial-red); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.article-content blockquote { margin: 2em 0; border-left: 7px solid var(--editorial-red); padding: .2em 0 .2em 1em; color: #111; font-size: 1.35em; font-weight: 700; line-height: 1.35; }
+.article-content a { color: var(--slot4-accent-fill); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.article-content blockquote {
+  margin: 2em 0;
+  border-left: 7px solid var(--slot4-accent-fill);
+  padding: .25em 0 .25em 1em;
+  color: #143c39;
+  font-size: 1.28em;
+  font-weight: 700;
+  line-height: 1.42;
+  background: rgba(252, 224, 155, 0.18);
+}
 .article-content ul, .article-content ol { margin: 1.3em 0; padding-left: 1.4em; }
 .article-content li { margin: .5em 0; }
-.article-content img { width: 100%; margin: 2em 0; }
+.article-content img { width: 100%; margin: 2em 0; border-radius: 1.4rem; }
 
 input, textarea, select, button { border-radius: 0 !important; }
 
+@media (max-width: 1024px) {
+  .premium-hero-curve { border-bottom-left-radius: 0; }
+  .premium-hero-curve::after { display: none; }
+}
+
 @media (max-width: 640px) {
-  .article-content { font-size: 1.05rem; line-height: 1.72; }
-  .article-content p:first-of-type::first-letter { font-size: 3.9em; }
+  .article-content { font-size: 1.02rem; line-height: 1.74; }
+  .article-content p:first-of-type::first-letter { font-size: 3.8em; }
 }
