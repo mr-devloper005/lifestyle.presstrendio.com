@@ -1,12 +1,11 @@
 import Link from 'next/link'
-import { ArrowRight, Search } from 'lucide-react'
+import { ArrowRight, Globe2, Headphones, Plus, Search, Shapes, Sparkles } from 'lucide-react'
 import type { SitePost } from '@/lib/site-connector'
 import type { HomeTimeSection } from '@/lib/task-data'
 import type { TaskKey } from '@/lib/site-config'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { pagesContent } from '@/editable/content/pages.content'
 import { editableDesignContract as dc } from '@/editable/layouts/design-contract'
-import { CompactIndexCard, getEditableExcerpt, getEditablePostImage, postHref, RailPostCard } from '@/editable/cards/PostCards'
+import { getEditableCategory, getEditableExcerpt, postHref } from '@/editable/cards/PostCards'
 
 type HomeSectionProps = {
   primaryTask: TaskKey
@@ -19,119 +18,199 @@ function taskLabel(task: TaskKey) {
   return SITE_CONFIG.tasks.find((item) => item.key === task)?.label || task
 }
 
+const faqItems = [
+  'How much does it cost to distribute a release?',
+  'What is the best way to reach the right outlets?',
+  'How do teams coordinate press assets across channels?',
+  'What should go into a strong launch announcement?',
+  'How can brands keep media workflows organized?',
+]
+
 export function EditableHomeHero({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
   const lead = posts[0]
-  const side = posts.slice(1, 3)
-  const trending = posts.slice(3, 8)
-  const heroTitle = pagesContent.home.hero.title.join(' ') || `${SITE_CONFIG.name}: independent stories, culture, and perspective.`
+  const headline = lead?.title || `There for every stage of your story.`
+  const subhead = getEditableExcerpt(lead, 220) || `Distribution, outreach, newsroom visibility, and campaign support built for fast-moving communications teams.`
 
   return (
-    <section className="border-b border-black/20 bg-[var(--slot4-surface-bg)]">
-      <div className={`${dc.shell.section} py-8 sm:py-10`}>
-        {!lead ? (
-          <div className="grid min-h-[520px] items-end bg-black p-8 text-white sm:p-12 lg:grid-cols-[1fr_.55fr]">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[.24em] text-[var(--slot4-accent)]">{pagesContent.home.hero.badge}</p>
-              <h1 className={`${dc.type.heroTitle} mt-5 max-w-5xl`}>{heroTitle}</h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/70">{pagesContent.home.hero.description}</p>
-              <Link href={primaryRoute} className={`${dc.button.accent} mt-8`}>Open newsroom <ArrowRight className="h-4 w-4" /></Link>
+    <section className="premium-hero-curve isolate bg-[var(--hero-gradient)] text-[var(--slot4-page-text)]">
+      <div className={`${dc.shell.section} relative py-10 sm:py-14 lg:py-20`}>
+        <div className="relative z-10 grid gap-10 lg:grid-cols-[1.05fr_0.75fr] lg:items-center">
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.26em] text-[var(--slot4-accent-soft)]">Media distribution platform</p>
+            <h1 className="mt-6 text-5xl font-black leading-[0.98] tracking-[-0.06em] sm:text-6xl lg:text-[5.4rem]">
+              {headline}
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--slot4-page-text)]/80 sm:text-lg">
+              {subhead}
+            </p>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--slot4-page-text)]/72">
+              One platform for release planning, media visibility, content discovery, and the teams keeping every announcement moving.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link href="/contact" className="border border-white/35 px-8 py-4 text-sm font-black text-white transition hover:bg-white hover:text-[var(--slot4-dark-bg)]">
+                Contact Us
+              </Link>
             </div>
           </div>
-        ) : (
-          <div className="grid gap-px bg-black/20 lg:grid-cols-[.72fr_1.48fr_.7fr]">
-            <div className="grid gap-px bg-black/20">
-              {side.map((post, index) => (
-                <Link key={post.id} href={postHref(primaryTask, post, primaryRoute)} className="group relative min-h-[270px] overflow-hidden bg-black text-white">
-                  <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-65 transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_15%,rgba(0,0,0,.9))]" />
-                  <div className="absolute inset-x-0 bottom-0 p-5">
-                    <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/65">{index === 0 ? 'Spotlight' : 'Culture desk'}</p>
-                    <h2 className="mt-2 text-2xl font-black leading-[1.02] tracking-[-.045em]">{post.title}</h2>
-                  </div>
-                </Link>
-              ))}
-            </div>
 
-            <Link href={postHref(primaryTask, lead, primaryRoute)} className="group relative min-h-[541px] overflow-hidden bg-[var(--slot4-accent)] text-white">
-              <img src={getEditablePostImage(lead)} alt={lead.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]" />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.84))]" />
-              <div className="absolute inset-x-0 bottom-0 border-t-8 border-[var(--slot4-accent)] p-6 sm:p-9">
-                <span className="bg-[var(--slot4-accent)] px-3 py-2 text-[10px] font-black uppercase tracking-[.2em]">Lead story</span>
-                <h1 className="mt-5 text-4xl font-black leading-[.94] tracking-[-.06em] sm:text-6xl">{lead.title}</h1>
-                <p className="mt-5 max-w-2xl text-sm leading-7 text-white/82 sm:text-base">{getEditableExcerpt(lead, 180)}</p>
+          <div className="relative z-10">
+            <Link href={lead ? postHref(primaryTask, lead, primaryRoute) : primaryRoute} className="glass-card group block rounded-[2rem] border border-white/30 shadow-[0_28px_70px_rgba(0,0,0,0.18)]">
+              <div className="bg-[rgba(252,224,155,.52)] px-5 py-5 text-[var(--slot4-page-text)]">
+                <p className="text-4xl font-light leading-none sm:text-5xl">Get your story seen</p>
+                <p className="mt-2 text-4xl font-black leading-none sm:text-5xl">in the right places.</p>
+              </div>
+              <div className="p-6 sm:p-7">
+                <p className="text-right text-2xl font-semibold text-[var(--slot4-dark-bg)]">Media Visibility</p>
+                <h2 className="mt-8 text-3xl font-black leading-tight tracking-[-0.04em] text-[var(--slot4-dark-bg)]">
+                  {lead?.title || SITE_CONFIG.name}
+                </h2>
+                <p className="mt-4 text-sm font-semibold leading-7 text-[var(--slot4-muted-text)]">
+                  {getEditableExcerpt(lead, 140)}
+                </p>
+              </div>
+              <div className="bg-white px-5 py-3 text-[var(--slot4-dark-bg)]">
+                <p className="text-2xl font-black tracking-[-0.04em]">Monthly Reach: Category-led discovery</p>
               </div>
             </Link>
-
-            <aside className="bg-[var(--slot4-surface-bg)] p-6">
-              <div className="flex items-end justify-between border-b-4 border-black pb-3">
-                <h2 className="text-2xl font-black uppercase tracking-[-.04em]">Trending</h2>
-                <span className="text-[10px] font-black uppercase tracking-[.2em] text-[var(--slot4-accent)]">Now</span>
-              </div>
-              <div className="mt-2">
-                {trending.map((post, index) => <CompactIndexCard key={post.id} post={post} href={postHref(primaryTask, post, primaryRoute)} index={index} />)}
-              </div>
-            </aside>
           </div>
-        )}
+        </div>
       </div>
     </section>
   )
 }
 
 export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
-  const railPosts = posts.slice(5, 13).length ? posts.slice(5, 13) : posts
-  if (!railPosts.length) return null
+  const logos = ['Sherwin Williams', 'Moderna', 'LG', 'Kohler', 'Merck', '5WPR']
+  const statCards = [
+    { label: 'Experience', value: '20+', copy: 'Years supporting public-facing communications and release workflows.' },
+    { label: 'Global Reach', value: '120+', copy: 'Markets and categories covered through active distribution planning.' },
+    { label: 'Real Humans', value: '100%', copy: 'Clear handoff between launch planning, outreach, and support.' },
+    { label: 'One Platform', value: '1 login', copy: 'A connected workspace for releases, media lists, and visibility tracking.' },
+  ]
+  const railPosts = posts.slice(2, 8)
+
   return (
-    <section className="bg-[var(--slot4-page-bg)]">
+    <section className="bg-[var(--slot4-surface-bg)]">
       <div className={`${dc.shell.section} ${dc.shell.sectionY}`}>
-        <div className="flex items-end justify-between gap-6 border-b-4 border-black pb-4">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[.23em] text-[var(--slot4-accent)]">The daily edit</p>
-            <h2 className="mt-2 text-4xl font-black tracking-[-.055em]">Latest stories</h2>
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center text-4xl font-light tracking-[-0.05em] text-[var(--slot4-accent-fill)] sm:text-6xl">Brands we&apos;ve supported at every stage.</h2>
+          <p className="mt-6 text-center text-lg leading-8 text-[var(--slot4-muted-text)]">
+            From launches and announcements to media rollouts and executive updates, teams need a surface that stays calm while the story moves fast.
+          </p>
+        </div>
+
+        <div className="mt-10 grid grid-cols-[auto_1fr_auto] items-center gap-4">
+          <div className="hidden text-5xl text-[var(--slot4-dark-bg)] md:block">‹</div>
+          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {logos.map((logo) => (
+              <div key={logo} className="flex min-h-32 items-center justify-center border border-[#186f65]/10 bg-white px-4 text-center text-2xl font-black tracking-[-0.04em] text-[var(--slot4-dark-bg)] shadow-sm">
+                {logo}
+              </div>
+            ))}
           </div>
-          <Link href={primaryRoute} className="hidden text-xs font-black uppercase tracking-[.14em] hover:text-[var(--slot4-accent)] sm:inline-flex">View all <ArrowRight className="ml-2 h-4 w-4" /></Link>
+          <div className="hidden text-5xl text-[var(--slot4-dark-bg)] md:block">›</div>
         </div>
-        <div className={`${dc.layout.rail} mt-6`}>
-          {railPosts.map((post, index) => <RailPostCard key={post.id} post={post} href={postHref(primaryTask, post, primaryRoute)} index={index} />)}
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-4">
+          {statCards.map((item) => (
+            <article key={item.label} className="rounded-[2rem] border border-[#186f65]/12 bg-white p-6 shadow-[0_18px_42px_rgba(24,111,101,0.08)]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--slot4-accent-fill)]">{item.label}</p>
+              <h3 className="mt-5 text-5xl font-black tracking-[-0.06em] text-[var(--slot4-dark-bg)]">{item.value}</h3>
+              <p className="mt-4 text-base leading-7 text-[var(--slot4-muted-text)]">{item.copy}</p>
+            </article>
+          ))}
         </div>
+
+        {railPosts.length ? (
+          <div className="mt-14">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--slot4-accent-fill)]">Latest coverage</p>
+                <h3 className="mt-2 text-4xl font-black tracking-[-0.05em] text-[var(--slot4-dark-bg)]">What teams are launching now</h3>
+              </div>
+              <Link href={primaryRoute} className="hidden text-sm font-black text-[var(--slot4-dark-bg)] hover:text-[var(--slot4-accent-fill)] sm:inline-flex">
+                View all <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+            <div className={dc.layout.rail}>
+              {railPosts.map((post, index) => (
+                <Link key={post.id || post.slug} href={postHref(primaryTask, post, primaryRoute)} className="w-[250px] shrink-0 snap-start rounded-[1.8rem] border border-[#186f65]/12 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:w-[280px]">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">
+                    {String(index + 1).padStart(2, '0')} / {getEditableCategory(post)}
+                  </p>
+                  <h4 className="mt-4 text-2xl font-black leading-tight tracking-[-0.04em] text-[var(--slot4-dark-bg)]">{post.title}</h4>
+                  <p className="mt-4 text-sm leading-7 text-[var(--slot4-muted-text)]">{getEditableExcerpt(post, 120)}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   )
 }
 
 export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
-  const feature = posts[8] || posts[0]
-  const portraits = posts.slice(9, 14).length ? posts.slice(9, 14) : posts.slice(1, 6)
-  if (!feature) return null
+  const feature = posts[0]
+  const briefs = posts.slice(6, 9)
+  const dataPost = posts[9] || posts[1] || feature
+  const analyticsPost = posts[10] || posts[2] || feature
+  const features = [
+    {
+      title: 'Distribution',
+      body: 'Launch announcements with room for strong headlines, category context, and release-ready supporting details.',
+      href: primaryRoute,
+      post: feature,
+    },
+    {
+      title: 'Media Database & Monitoring',
+      body: 'Keep lists, discovery, and media context visible while you prepare and publish the story.',
+      href: dataPost ? postHref(primaryTask, dataPost, primaryRoute) : primaryRoute,
+      post: dataPost,
+    },
+    {
+      title: 'Insights & Analytics',
+      body: 'Understand what moved, what resonated, and what deserves a second wave after publication.',
+      href: analyticsPost ? postHref(primaryTask, analyticsPost, primaryRoute) : primaryRoute,
+      post: analyticsPost,
+    },
+  ]
+
   return (
-    <section className="bg-[var(--slot4-accent)] text-white">
-      <div className={`${dc.shell.section} py-14 sm:py-20`}>
-        <div className="flex items-end justify-between border-b border-white/50 pb-5">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[.24em] text-white/70">Essential reading</p>
-            <h2 className="mt-2 text-4xl font-black tracking-[-.055em] sm:text-5xl">Features</h2>
-          </div>
-          <span className="editorial-serif hidden text-2xl italic sm:block">Stories worth your time.</span>
+    <section className="bg-[linear-gradient(180deg,#fffdf5_0%,#fffdf5_58%,#eef2db_58%,#eef2db_100%)]">
+      <div className={`${dc.shell.section} py-16 sm:py-20`}>
+        <div className="mx-auto max-w-5xl text-center">
+          <h2 className="text-4xl font-light tracking-[-0.05em] text-[var(--slot4-accent-fill)] sm:text-6xl">Two platforms. One team. Built for wherever you are.</h2>
+          <p className="mt-6 text-lg leading-9 text-[var(--slot4-muted-text)]">
+            Modern communications teams do not need more tools to juggle. They need one clear environment for visibility, publishing, and follow-through.
+          </p>
         </div>
-        <div className="mt-7 grid gap-5 lg:grid-cols-[1.55fr_.72fr_.72fr_.72fr]">
-          <Link href={postHref(primaryTask, feature, primaryRoute)} className="group relative min-h-[520px] overflow-hidden bg-black lg:row-span-2">
-            <img src={getEditablePostImage(feature)} alt={feature.title} className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.025]" />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_20%,rgba(0,0,0,.88))]" />
-            <div className="absolute inset-x-0 bottom-0 p-7">
-              <p className="text-[10px] font-black uppercase tracking-[.2em] text-white/70">Cover feature</p>
-              <h3 className="mt-3 text-4xl font-black leading-[.98] tracking-[-.055em]">{feature.title}</h3>
-            </div>
-          </Link>
-          {portraits.slice(0, 5).map((post) => (
-            <Link key={post.id} href={postHref(primaryTask, post, primaryRoute)} className="group bg-black text-white">
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(0,0,0,.88))]" />
-                <h3 className="absolute inset-x-0 bottom-0 p-4 text-lg font-black leading-tight tracking-[-.035em]">{post.title}</h3>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {features.map((item, index) => (
+            <Link key={item.title} href={item.href} className={`group rounded-[2rem] border border-[#186f65]/12 p-7 shadow-[0_22px_48px_rgba(24,111,101,0.10)] ${index === 0 ? 'bg-[var(--slot4-dark-bg)] text-white' : 'bg-white text-[var(--slot4-page-text)]'}`}>
+              <div className="p-7">
+                <p className={`text-xs font-black uppercase tracking-[0.22em] ${index === 0 ? 'text-[var(--slot4-accent-soft)]' : 'text-[var(--slot4-accent-fill)]'}`}>{index === 0 ? 'Featured workflow' : 'Product lane'}</p>
+                <h3 className="mt-4 text-3xl font-black tracking-[-0.05em]">{item.title}</h3>
+                <p className={`mt-4 text-base leading-8 ${index === 0 ? 'text-white/76' : 'text-[var(--slot4-muted-text)]'}`}>{item.body}</p>
+                <p className={`mt-4 text-sm leading-7 ${index === 0 ? 'text-white/72' : 'text-[var(--slot4-muted-text)]'}`}>{getEditableExcerpt(item.post, 120)}</p>
+                <span className={`mt-6 inline-flex text-sm font-black ${index === 0 ? 'text-white' : 'text-[var(--slot4-dark-bg)]'}`}>Explore <ArrowRight className="ml-2 h-4 w-4" /></span>
               </div>
             </Link>
           ))}
         </div>
+
+        {briefs.length ? (
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {briefs.map((post) => (
+              <Link key={post.id || post.slug} href={postHref(primaryTask, post, primaryRoute)} className="rounded-[1.8rem] border border-[#186f65]/12 bg-white p-5 shadow-sm">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">{getEditableCategory(post)}</p>
+                <h4 className="mt-2 text-xl font-black leading-tight tracking-[-0.04em] text-[var(--slot4-dark-bg)]">{post.title}</h4>
+                <p className="mt-3 text-sm leading-7 text-[var(--slot4-muted-text)]">{getEditableExcerpt(post, 110)}</p>
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   )
@@ -141,47 +220,74 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
   const collected = timeSections.flatMap((section) => section.posts)
   const source = collected.length ? collected : posts.slice(3)
   const lead = source[0] || posts[0]
-  const briefs = source.slice(1, 7)
+  const listPosts = source.slice(1, 6)
   if (!lead) return null
+
   return (
     <section className="bg-[var(--slot4-surface-bg)]">
-      <div className={`${dc.shell.section} ${dc.shell.sectionY}`}>
-        <div className="grid gap-10 lg:grid-cols-[1.25fr_.75fr]">
-          <div>
-            <div className="border-b-4 border-black pb-4">
-              <p className="text-[10px] font-black uppercase tracking-[.23em] text-[var(--slot4-accent)]">From the newsroom</p>
-              <h2 className="mt-2 text-4xl font-black tracking-[-.055em]">More to discover</h2>
-            </div>
-            <Link href={postHref(primaryTask, lead, primaryRoute)} className="group mt-6 grid border-b border-black/20 pb-7 sm:grid-cols-[1.1fr_.9fr]">
-              <div className="relative min-h-[330px] overflow-hidden bg-[var(--slot4-media-bg)]">
-                <img src={getEditablePostImage(lead)} alt={lead.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-              </div>
-              <div className="bg-black p-7 text-white sm:p-9">
-                <p className="text-[10px] font-black uppercase tracking-[.2em] text-[var(--slot4-accent)]">Editor&apos;s pick</p>
-                <h3 className="mt-4 text-4xl font-black leading-[.98] tracking-[-.055em]">{lead.title}</h3>
-                <p className="mt-5 text-sm leading-7 text-white/70">{getEditableExcerpt(lead, 180)}</p>
-              </div>
-            </Link>
-          </div>
-          <aside>
-            <div className="border-b-4 border-black pb-4">
-              <p className="text-[10px] font-black uppercase tracking-[.23em] text-[var(--slot4-accent)]">Quick reads</p>
-              <h2 className="mt-2 text-4xl font-black tracking-[-.055em]">The briefing</h2>
-            </div>
-            <div className="mt-2">
-              {briefs.map((post, index) => <CompactIndexCard key={post.id} post={post} href={postHref(primaryTask, post, primaryRoute)} index={index} />)}
-            </div>
-          </aside>
+      <div className={`${dc.shell.section} py-16 sm:py-20`}>
+        <div className="mx-auto max-w-5xl text-center">
+          <h2 className="text-4xl font-light tracking-[-0.05em] text-[var(--slot4-accent-fill)] sm:text-6xl">Straight answers to what prospects ask before they sign up.</h2>
+          <p className="mt-5 text-lg leading-8 text-[var(--slot4-muted-text)]">
+            Search the archive, browse topic-led stories, and move between high-level strategy and practical release examples without losing context.
+          </p>
         </div>
-        <form action="/search" className="mt-14 grid border-y-4 border-black bg-[var(--slot4-page-bg)] p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-9">
-          <div>
-            <h3 className="text-3xl font-black tracking-[-.05em]">Search the full archive</h3>
-            <p className="mt-2 text-sm text-black/60">Explore every {taskLabel(primaryTask).toLowerCase()} published by {SITE_CONFIG.name}.</p>
+
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
+          <Link href={postHref(primaryTask, lead, primaryRoute)} className="group rounded-[2rem] border border-[#186f65]/12 bg-white p-8 shadow-[0_20px_50px_rgba(24,111,101,0.08)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--slot4-accent-fill)]">Editor&apos;s pick</p>
+            <h3 className="mt-4 text-4xl font-black tracking-[-0.05em] text-[var(--slot4-dark-bg)]">{lead.title}</h3>
+            <p className="mt-5 text-base leading-8 text-[var(--slot4-muted-text)]">{getEditableExcerpt(lead, 185)}</p>
+            <span className="mt-6 inline-flex text-sm font-black text-[var(--slot4-dark-bg)]">Read full story <ArrowRight className="ml-2 h-4 w-4" /></span>
+          </Link>
+
+          <div className="rounded-[2rem] border border-[#186f65]/12 bg-white px-6 py-4 shadow-sm">
+            {faqItems.map((item) => (
+              <div key={item} className="flex items-center justify-between gap-4 border-b border-[#186f65]/10 py-5 last:border-b-0">
+                <p className="text-xl tracking-[-0.03em] text-[var(--slot4-accent-fill)]">{item}</p>
+                <Plus className="h-5 w-5 shrink-0 text-[var(--slot4-dark-bg)]" />
+              </div>
+            ))}
           </div>
-          <label className="mt-5 flex border border-black bg-white sm:mt-0 sm:min-w-[420px]">
-            <Search className="ml-4 mt-4 h-4 w-4" />
-            <input name="q" placeholder="Search stories" className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm outline-none" />
-            <button className="bg-[var(--slot4-accent)] px-5 text-xs font-black uppercase tracking-[.14em] text-white">Search</button>
+        </div>
+
+        {listPosts.length ? (
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {listPosts.map((post, index) => (
+              <Link key={post.id || post.slug} href={postHref(primaryTask, post, primaryRoute)} className={`group rounded-[1.8rem] border border-[#186f65]/12 p-5 shadow-sm ${index % 2 === 0 ? 'bg-white' : 'bg-[var(--slot4-panel-bg)]'}`}>
+                <div className={`grid gap-4 ${index % 3 === 0 ? 'sm:grid-cols-[1fr_110px]' : 'sm:grid-cols-[110px_1fr]'}`}>
+                  {index % 3 === 0 ? (
+                    <>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">{getEditableCategory(post)}</p>
+                        <h4 className="mt-2 text-2xl font-black leading-tight tracking-[-0.04em] text-[var(--slot4-dark-bg)]">{post.title}</h4>
+                        <p className="mt-3 text-sm leading-7 text-[var(--slot4-muted-text)]">{getEditableExcerpt(post, 125)}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">{getEditableCategory(post)}</p>
+                        <h4 className="mt-2 text-2xl font-black leading-tight tracking-[-0.04em] text-[var(--slot4-dark-bg)]">{post.title}</h4>
+                        <p className="mt-3 text-sm leading-7 text-[var(--slot4-muted-text)]">{getEditableExcerpt(post, 125)}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : null}
+
+        <form action="/search" className="mt-14 grid gap-5 rounded-[2rem] bg-[var(--slot4-panel-bg)] p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-9">
+          <div>
+            <h3 className="text-3xl font-black tracking-[-0.04em] text-[var(--slot4-dark-bg)]">Search the full archive</h3>
+            <p className="mt-2 text-sm leading-7 text-[var(--slot4-muted-text)]">Explore every {taskLabel(primaryTask).toLowerCase()} with category-aware search and story-led results.</p>
+          </div>
+          <label className="flex overflow-hidden rounded-full border border-[#186f65]/15 bg-white sm:min-w-[420px]">
+            <Search className="ml-5 mt-4 h-4 w-4 text-[var(--slot4-dark-bg)]" />
+            <input name="q" placeholder="Search stories, topics, and media updates" className="min-w-0 flex-1 bg-transparent px-3 py-4 text-sm outline-none" />
+            <button className="bg-[var(--slot4-dark-bg)] px-6 text-xs font-black uppercase tracking-[0.14em] text-white">Search</button>
           </label>
         </form>
       </div>
@@ -190,18 +296,42 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
 }
 
 export function EditableHomeCta() {
+  const tiles = [
+    { icon: Globe2, title: 'Global Reach', copy: 'Bring one story into the channels where customers, partners, and journalists are already paying attention.' },
+    { icon: Headphones, title: 'Real Support', copy: 'Keep coordination simple with clear next steps and a product surface built to reduce handoff friction.' },
+    { icon: Shapes, title: 'One Platform', copy: 'Move from planning to release distribution to follow-up without rebuilding the workflow every time.' },
+  ]
+
   return (
-    <section className="bg-black text-white">
-      <div className={`${dc.shell.section} grid gap-px bg-white/25 lg:grid-cols-2`}>
-        <div className="bg-black px-6 py-14 sm:px-10 lg:py-20">
-          <p className="text-[10px] font-black uppercase tracking-[.24em] text-[var(--slot4-accent)]">Stay informed</p>
-          <h2 className="mt-4 max-w-xl text-5xl font-black leading-[.94] tracking-[-.06em]">The stories shaping what comes next.</h2>
-        </div>
-        <div className="flex flex-col justify-center bg-black px-6 py-14 sm:px-10 lg:py-20">
-          <p className="max-w-xl text-lg leading-8 text-white/65">Fresh releases, media updates, newsroom perspectives, and useful public information in one focused publication.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/contact" className={dc.button.accent}>Send a tip</Link>
-            <Link href="/signup" className="border border-white px-7 py-3.5 text-xs font-black uppercase tracking-[.12em] hover:bg-white hover:text-black">Join the readership</Link>
+    <section className="bg-[linear-gradient(180deg,#eef2db_0%,#fffdf5_100%)]">
+      <div className={`${dc.shell.section} py-16 sm:py-20`}>
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+          <div className="rounded-[2.4rem] bg-[var(--slot4-dark-bg)] px-7 py-10 text-white sm:px-10 lg:py-14">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--slot4-accent-soft)]">Stay informed</p>
+            <h2 className="mt-4 max-w-2xl text-5xl font-black leading-[0.96] tracking-[-0.06em]">The stories shaping what comes next.</h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/74">
+              Fresh releases, smarter media workflows, and a premium publishing surface for modern communications teams.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/contact" className={dc.button.accent}>Send a Tip</Link>
+              <Link href="/signup" className="rounded-full border border-white/30 px-7 py-3.5 text-xs font-black uppercase tracking-[0.12em] hover:bg-white hover:text-[var(--slot4-dark-bg)]">Join the readership</Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {tiles.map((tile) => (
+              <article key={tile.title} className="rounded-[1.8rem] border border-[#186f65]/12 bg-white p-6 shadow-sm">
+                <tile.icon className="h-7 w-7 text-[var(--slot4-accent-fill)]" />
+                <h3 className="mt-4 text-2xl font-black tracking-[-0.04em] text-[var(--slot4-dark-bg)]">{tile.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--slot4-muted-text)]">{tile.copy}</p>
+              </article>
+            ))}
+            <div className="rounded-[1.8rem] bg-[var(--slot4-accent-fill)] p-6 text-white">
+              <div className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.18em]">
+                <Sparkles className="h-5 w-5" /> Momentum
+              </div>
+              <p className="mt-4 text-xl leading-8">A sharper interface makes every release feel intentional, premium, and easier to act on.</p>
+            </div>
           </div>
         </div>
       </div>
