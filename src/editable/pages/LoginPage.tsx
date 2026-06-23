@@ -12,18 +12,20 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function LoginPage() {
   return (
     <EditableSiteShell>
-      <main className="bg-[#f7f4ef] text-[#111]">
-        <section className="mx-auto grid min-h-[calc(100vh-12rem)] max-w-[var(--editable-container)] border-x border-black bg-white lg:grid-cols-[1.08fr_0.92fr]">
-          <div className="flex flex-col justify-center border-b border-black bg-[#c92f2f] p-8 text-white sm:p-12 lg:border-b-0 lg:border-r lg:p-16">
-            <p className="text-xs font-black uppercase tracking-[0.28em]">{pagesContent.auth.login.badge}</p>
-            <h1 className="editorial-brand mt-5 max-w-xl text-6xl font-black leading-[0.92] tracking-[-0.055em] sm:text-8xl">{pagesContent.auth.login.title}</h1>
-            <p className="mt-6 max-w-lg text-sm font-semibold leading-8 text-white/75">{pagesContent.auth.login.description}</p>
-          </div>
-          <div className="flex flex-col justify-center p-7 sm:p-12 lg:p-16">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#c92f2f]">Member access</p>
-            <h2 className="editorial-serif mt-3 text-4xl font-black">{pagesContent.auth.login.formTitle}</h2>
-            <EditableLocalLoginForm />
-            <p className="mt-5 border-t border-black pt-5 text-sm text-black/65">New here? <Link href="/signup" className="font-black text-[#c92f2f] underline-offset-4 hover:underline">{pagesContent.auth.login.createCta}</Link></p>
+      <main className="bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
+        <section className="mx-auto max-w-[980px] px-4 py-10 sm:px-6 lg:py-16">
+          <div className="grid overflow-hidden rounded-[2.4rem] border border-[#186f65]/12 bg-white shadow-[0_24px_70px_rgba(24,111,101,0.10)] lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="flex flex-col justify-center bg-[linear-gradient(135deg,#186f65_0%,#3c8c68_45%,#b2533e_100%)] p-8 text-white sm:p-12">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--slot4-accent-soft)]">{pagesContent.auth.login.badge}</p>
+              <h1 className="editorial-brand mt-5 max-w-xl text-5xl font-black leading-[0.94] tracking-[-0.055em] sm:text-6xl">{pagesContent.auth.login.title}</h1>
+              <p className="mt-6 max-w-lg text-sm font-semibold leading-8 text-white/78">{pagesContent.auth.login.description}</p>
+            </div>
+            <div className="flex flex-col justify-center p-7 sm:p-10">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#b2533e]">Member access</p>
+              <h2 className="mt-3 text-3xl font-black text-[var(--slot4-dark-bg)]">{pagesContent.auth.login.formTitle}</h2>
+              <EditableLocalLoginForm />
+              <p className="mt-5 border-t border-[#186f65]/12 pt-5 text-sm text-[var(--slot4-muted-text)]">New here? <Link href="/signup" className="font-black text-[#b2533e] underline-offset-4 hover:underline">{pagesContent.auth.login.createCta}</Link></p>
+            </div>
           </div>
         </section>
       </main>

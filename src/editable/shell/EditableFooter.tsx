@@ -1,9 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Send } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
 export function EditableFooter() {
@@ -11,34 +10,56 @@ export function EditableFooter() {
   const { session, logout } = useEditableLocalAuthSession()
 
   return (
-    <footer className="border-t-8 border-[var(--slot4-accent)] bg-black text-white">
+    <footer className="overflow-hidden bg-[var(--footer-gradient)] text-[var(--slot4-page-text)]">
       <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_.7fr_.7fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-start">
           <div>
-            <Link href="/" className="editorial-brand text-5xl font-black text-[var(--slot4-accent)] sm:text-6xl">{SITE_CONFIG.name}</Link>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-white/62">{globalContent.footer?.description || SITE_CONFIG.description}</p>
-            <form action="/signup" className="mt-8 flex max-w-xl border border-white/35">
-              <input name="email" type="email" placeholder="Email for newsroom updates" className="min-w-0 flex-1 bg-transparent px-4 py-4 text-sm outline-none placeholder:text-white/40" />
-              <button className="bg-[var(--slot4-accent)] px-5 text-xs font-black uppercase tracking-[.14em]">Subscribe</button>
+            <Link href="/" className="editorial-brand text-4xl font-black tracking-[-0.06em] text-[var(--slot4-dark-bg)] sm:text-6xl">
+              {SITE_CONFIG.name}
+            </Link>
+            <p className="mt-6 max-w-xl text-base leading-8 text-[var(--slot4-muted-text)]">
+              Built for media distributors who want clearer publishing, stronger visibility, and a platform that keeps releases, coverage, and discovery moving together.
+            </p>
+            <form action="/signup" className="mt-8 flex max-w-xl overflow-hidden rounded-full bg-white/18 p-1 backdrop-blur">
+              <input
+                name="email"
+                type="email"
+                placeholder="Email for release updates"
+                className="min-w-0 flex-1 bg-transparent px-5 py-4 text-sm text-[var(--slot4-page-text)] outline-none placeholder:text-[var(--slot4-muted-text)]"
+              />
+              <button className="inline-flex items-center gap-2 rounded-full bg-white px-5 text-xs font-black uppercase tracking-[0.14em] text-[var(--slot4-dark-bg)]">
+                Subscribe <Send className="h-4 w-4" />
+              </button>
             </form>
           </div>
-          <div>
-            <h3 className="border-b border-white/25 pb-3 text-[10px] font-black uppercase tracking-[.22em] text-white/55">Explore</h3>
-            <div className="mt-4 grid gap-3">
-              <Link href="/search" className="group inline-flex items-center justify-between text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Archive<ArrowRight className="h-4 w-4" /></Link>
-            </div>
-          </div>
-          <div>
-            <h3 className="border-b border-white/25 pb-3 text-[10px] font-black uppercase tracking-[.22em] text-white/55">Publication</h3>
-            <div className="mt-4 grid gap-3">
-              <Link href="/about" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">About</Link>
-              <Link href="/contact" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Contact</Link>
-              {session ? <><Link href="/create" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Publish</Link><button onClick={logout} className="text-left text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Logout</button></> : <><Link href="/login" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Log in</Link><Link href="/signup" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Subscribe</Link></>}
+
+          <div className="rounded-[1.8rem] bg-white/30 p-6 backdrop-blur">
+            <h3 className="text-lg font-black tracking-[-0.03em] text-[var(--slot4-dark-bg)]">About</h3>
+            <div className="mt-4 grid gap-3 text-sm text-[var(--slot4-page-text)]">
+              <Link href="/about" className="transition hover:text-[var(--slot4-accent-fill)]">
+                About
+              </Link>
+              <Link href="/contact" className="transition hover:text-[var(--slot4-accent-fill)]">
+                Contact
+              </Link>
             </div>
           </div>
         </div>
+
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#186f65]/15 pt-6 text-sm text-[var(--slot4-muted-text)]">
+          <p>© {year} {SITE_CONFIG.name}. Media distribution, release management, and public updates.</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/contact" className="inline-flex items-center gap-2 font-black text-[var(--slot4-dark-bg)] transition hover:text-[var(--slot4-accent-fill)]">
+              Contact team <ArrowRight className="h-4 w-4" />
+            </Link>
+            {session ? (
+              <button onClick={logout} className="font-black text-[var(--slot4-dark-bg)] transition hover:text-[var(--slot4-accent-fill)]">Logout</button>
+            ) : (
+              <Link href="/signup" className="font-black text-[var(--slot4-dark-bg)] transition hover:text-[var(--slot4-accent-fill)]">Create account</Link>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="border-t border-white/20 px-4 py-5 text-center text-[10px] font-black uppercase tracking-[.18em] text-white/45">© {year} {SITE_CONFIG.name}. Independent media and public information.</div>
     </footer>
   )
 }
