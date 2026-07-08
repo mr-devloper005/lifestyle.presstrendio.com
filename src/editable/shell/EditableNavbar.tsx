@@ -7,7 +7,7 @@ import { SITE_CONFIG } from '@/lib/site-config'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
 const quickLinks = [
-  { label: 'About', href: '/about' },
+  
   { label: 'Search', href: '/search' },
   { label: 'Contact', href: '/contact' },
   { label: 'Login', href: '/login' },
